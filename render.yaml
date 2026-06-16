@@ -1,0 +1,20 @@
+databases:
+  - name: school_db
+    databaseName: school_db
+    user: school_db_user
+
+services:
+  - type: web
+    name: school-admin
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn scool.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: school_db
+          property: connectionString
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
