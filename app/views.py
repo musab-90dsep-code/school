@@ -15,6 +15,14 @@ from app.models import (
 def home_redirect(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    
+    # Auto-create profile for superuser if it doesn't exist
+    if not hasattr(request.user, 'profile'):
+        if request.user.is_superuser:
+            Profile.objects.create(user=request.user, role='ADMIN')
+        else:
+            return redirect('login')
+            
     role = request.user.profile.role
     if role == 'ADMIN':
         return redirect('admin_panel')
@@ -47,6 +55,12 @@ def logout_view(request):
 
 @login_required
 def admin_panel_view(request):
+    if not hasattr(request.user, 'profile'):
+        if request.user.is_superuser:
+            Profile.objects.create(user=request.user, role='ADMIN')
+        else:
+            return redirect('home_redirect')
+            
     if request.user.profile.role != 'ADMIN':
         return redirect('home_redirect')
 
@@ -137,7 +151,7 @@ def admin_panel_view(request):
 
 @login_required
 def teacher_portal_view(request):
-    if request.user.profile.role != 'TEACHER':
+    if not hasattr(request.user, 'profile') or request.user.profile.role != 'TEACHER':
         return redirect('home_redirect')
 
     if request.method == 'POST':
@@ -192,7 +206,7 @@ def teacher_portal_view(request):
 
 @login_required
 def student_portal_view(request):
-    if request.user.profile.role != 'STUDENT':
+    if not hasattr(request.user, 'profile') or request.user.profile.role != 'STUDENT':
         return redirect('home_redirect')
 
     student_profile = request.user.profile
