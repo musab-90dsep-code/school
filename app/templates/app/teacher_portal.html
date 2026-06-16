@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Custom Scrollbar for sleek look */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-[#f8fafc] h-screen w-screen overflow-hidden antialiased text-slate-800 flex">
+
+<h2 class="sr-only">School management teacher portal showing all teacher features</h2>
+
+<div class="flex w-full h-full text-[13px] relative">
+  <!-- Sidebar -->
+  <div class="w-[220px] min-w-[220px] bg-slate-900 flex flex-col justify-between text-slate-400 h-full border-r border-slate-900">
+    <div class="flex flex-col overflow-y-auto h-full pb-4">
+      <div class="p-4 border-b border-slate-800 flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-[12px] font-bold shadow-md shadow-emerald-500/10">FK</div>
+        <div>
+          <p class="text-[13px] font-bold text-white tracking-wide">{{ user.first_name }} {{ user.last_name }}</p>
+          <span class="text-[10px] text-slate-500 block truncate max-w-[140px]">{{ teacher_profile.designation }}</span>
+        </div>
+      </div>
+
+      <div class="py-3 space-y-4">
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Overview</div>
+          <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 mx-2 rounded-lg cursor-pointer bg-emerald-500/10 text-emerald-400 font-medium transition-all duration-200" onclick="go('home',this)">
+            <i class="ti ti-layout-dashboard text-base"></i> My Dashboard
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Attendance</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('myatt',this)"><i class="ti ti-calendar-check text-base"></i> My Attendance</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('stuatt',this)"><i class="ti ti-users text-base"></i> Student Attendance</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Academic</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('routine',this)"><i class="ti ti-clock text-base"></i> My Routine</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('syllabus',this)"><i class="ti ti-book text-base"></i> Syllabus</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('homework',this)"><i class="ti ti-pencil text-base"></i> Homework</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('marks',this)"><i class="ti ti-file-text text-base"></i> Marks Entry</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('results',this)"><i class="ti ti-chart-bar text-base"></i> Student Results</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Communication</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('messages',this)"><i class="ti ti-message text-base"></i> Messages</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('notice',this)"><i class="ti ti-speakerphone text-base"></i> Notice Board</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Leave & HR</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('leave',this)"><i class="ti ti-calendar-off text-base"></i> Leave Apply</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('salary',this)"><i class="ti ti-cash text-base"></i> Salary Slips</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Profile</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('profile',this)"><i class="ti ti-user text-base"></i> My Profile</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="go('password',this)"><i class="ti ti-lock text-base"></i> Change Password</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-slate-800 bg-slate-950/40">
+      <a href="{% url 'logout' %}" class="no-underline">
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-rose-400 hover:bg-rose-500/10 transition-all duration-150 font-medium">
+          <i class="ti ti-logout text-base"></i> Sign Out
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden bg-[#f8fafc]">
+    <div class="flex items-center justify-between px-6 py-3.5 border-b border-slate-200/60 bg-white z-10 shadow-sm shadow-slate-100/40 shrink-0">
+      <div class="text-[16px] font-bold text-slate-900 tracking-tight" id="pg-title">My Dashboard</div>
+      <div class="flex items-center gap-4">
+        <div class="relative p-1 rounded-lg hover:bg-slate-100 cursor-pointer transition-colors">
+          <i class="ti ti-bell text-xl text-slate-600"></i>
+          <span class="absolute top-0 right-0 bg-rose-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold border-2 border-white">1</span>
+        </div>
+        <div class="h-5 w-[1px] bg-slate-200"></div>
+        <div class="flex items-center gap-2 cursor-pointer group">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center text-[12px] font-bold shadow-md shadow-emerald-500/10">FK</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6 flex-1 overflow-y-auto space-y-6">
+
+      <!-- HOME -->
+      <div class="page" id="page-home">
+        <div class="grid grid-cols-4 gap-2 mb-3.5">
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">My Attendance</div>
+            <div class="text-lg font-bold text-slate-900">94%</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">June 2026</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Classes Today</div>
+            <div class="text-lg font-bold text-slate-900">{{ routine_slots|length }}</div>
+            <div class="text-[10px] text-sky-700 mt-0.5">Active slots</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Homework Pending</div>
+            <div class="text-lg font-bold text-slate-900">{{ pending_hw_count }}</div>
+            <div class="text-[10px] text-amber-700 mt-0.5">To review</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Leave Balance</div>
+            <div class="text-lg font-bold text-slate-900">8</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">Days left</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-clock text-xs" aria-hidden="true"></i> Today's Schedule</h4>
+            {% for slot in routine_slots %}
+            <div class="flex items-center gap-2 px-2.5 py-1.5 border-b border-slate-100 text-[11px]">
+              <span class="min-width-[80px] text-slate-600">{{ slot.time_slot }}</span>
+              <span class="flex-1 font-medium text-slate-900">{{ slot.school_class.name }}</span>
+              <span class="text-slate-600">{{ slot.subject.name }}</span>
+              <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700 ml-1">Assigned</span>
+            </div>
+            {% empty %}
+            <div class="text-[11px] text-slate-600 p-2.5 text-center">No scheduled classes today</div>
+            {% endfor %}
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-alert-circle text-xs" aria-hidden="true"></i> Pending Tasks</h4>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Class 8-B homework check</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">Due today</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Class 9-A marks entry</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">Pending</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Unit test — Class 10</span><span class="text-slate-900 font-medium">Jun 20</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Syllabus update — Jul</span><span class="text-slate-900 font-medium">Jun 25</span></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-message text-xs" aria-hidden="true"></i> Recent Messages</h4>
+            <div class="flex gap-2 py-2 border-b border-slate-100 bg-sky-50 rounded p-1">
+              <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-medium shrink-0">RB</div>
+              <div class="msg-body"><p class="text-[11px] text-slate-900 font-semibold">Rahima's parent — Karim Ali</p><span class="text-[10px] text-slate-600">Absence reason জানতে চাইছেন</span></div>
+            </div>
+            <div class="flex gap-2 py-2 border-b border-slate-100">
+              <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-medium shrink-0">SA</div>
+              <div class="msg-body"><p class="text-[11px] text-slate-900 font-semibold">Principal — Admin</p><span class="text-[10px] text-slate-600">Exam duty roster পাঠানো হয়েছে</span></div>
+            </div>
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-speakerphone text-xs" aria-hidden="true"></i> Latest Notices</h4>
+            {% for n in notices %}
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]">
+              <span class="text-slate-600">{{ n.title }}</span>
+              <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium {% if n.priority == 'HIGH' %}bg-red-100 text-red-700{% else %}bg-sky-100 text-sky-700{% endif %}">{{ n.priority }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- MY ATTENDANCE -->
+      <div class="page hidden" id="page-myatt">
+        <div class="grid grid-cols-4 gap-2 mb-3.5">
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Present</div>
+            <div class="text-lg font-bold text-slate-900">16</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">Days this month</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Absent</div>
+            <div class="text-lg font-bold text-slate-900">1</div>
+            <div class="text-[10px] text-amber-700 mt-0.5">Jun 10</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Late</div>
+            <div class="text-lg font-bold text-slate-900">2</div>
+            <div class="text-[10px] text-amber-700 mt-0.5">After 9:15 AM</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Attendance %</div>
+            <div class="text-lg font-bold text-slate-900">94%</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">This month</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-calendar text-xs" aria-hidden="true"></i> June 2026 Calendar</h4>
+            <div class="grid grid-cols-7 gap-0.5 mb-1">
+              <div class="text-[9px] text-center text-slate-400">Su</div>
+              <div class="text-[9px] text-center text-slate-400">Mo</div>
+              <div class="text-[9px] text-center text-slate-400">Tu</div>
+              <div class="text-[9px] text-center text-slate-400">We</div>
+              <div class="text-[9px] text-center text-slate-400">Th</div>
+              <div class="text-[9px] text-center text-slate-400">Fr</div>
+              <div class="text-[9px] text-center text-slate-400">Sa</div>
+            </div>
+            <div class="grid grid-cols-7 gap-1 mt-2">
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400"></div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-amber-100 text-amber-700">L</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-red-100 text-red-700">A</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-amber-100 text-amber-700">L</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-emerald-100 text-emerald-700">P</div>
+              <div class="aspect-square rounded flex items-center justify-center text-[9px] font-medium bg-slate-50 text-slate-400">H</div>
+            </div>
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-fingerprint text-xs" aria-hidden="true"></i> Punch Log — Today</h4>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">In Time</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">9:02 AM</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Method</span><span>Fingerprint</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Status</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Present</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Out Time</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-slate-50 text-slate-600">Not yet</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENT ATTENDANCE -->
+      <div class="page hidden" id="page-stuatt">
+        <div class="flex justify-between items-center mb-2">
+          <div class="text-[12px] font-semibold text-slate-900 my-2">Biometric & Manual Attendance Entry</div>
+          <div class="flex gap-1.5">
+            <select id="att-class-select" class="text-[11px] p-1 border border-slate-200 rounded bg-white text-slate-900 outline-none">
+              <option value="Class 8-B">Class 8-B</option>
+              <option value="Class 7-A">Class 7-A</option>
+            </select>
+            <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150" onclick="saveClassAttendance()">Save Attendance ↗</button>
+          </div>
+        </div>
+        <div class="border border-slate-100 rounded-lg overflow-hidden mb-2.5">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Roll</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Name</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Biometric Status</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Manual Override</th>
+              </tr>
+            </thead>
+            <tbody id="att-student-list">
+              {% for s in class_students %}
+              <tr data-student-id="{{ s.user.id }}">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ s.roll }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ s.user.first_name }} {{ s.user.last_name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Auto Punch</span></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">
+                  <select class="att-status-select text-[11px] px-1 py-0.5 border border-slate-200 rounded outline-none bg-white">
+                    <option value="PRESENT">Present</option>
+                    <option value="ABSENT">Absent</option>
+                    <option value="LATE">Late</option>
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ROUTINE -->
+      <div class="page hidden" id="page-routine">
+        <div class="border border-slate-100 rounded-lg p-3 bg-white mb-2.5">
+          <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-clock text-xs" aria-hidden="true"></i> Weekly Class Schedule</h4>
+          <div class="border border-slate-100 rounded-lg overflow-hidden mt-2">
+            <table class="w-full border-collapse text-[11px]">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-100">
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Period</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Time</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Sunday</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Monday</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Tuesday</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Wednesday</th>
+                  <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Thursday</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">1st</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">8:00–8:45</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">—</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 8-B (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 7-A (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">—</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 9-A (English)</td></tr>
+                <tr><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">2nd</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">8:45–9:30</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 7-A (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">—</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 10-A (Literature)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 8-B (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">—</td></tr>
+                <tr><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">3rd</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">9:45–10:30</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 9-A (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 10-A (Literature)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">—</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 7-A (English)</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 8-B (English)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SYLLABUS -->
+      <div class="page hidden" id="page-syllabus">
+        <div class="text-[12px] font-semibold text-slate-900 my-2">My Subjects Syllabus Progress</div>
+        <div class="border border-slate-100 rounded-lg overflow-hidden mb-2.5">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Class</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Chapter</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Progress</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 8-B</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Ch 4: Tenses & Voice</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">
+                  <div class="min-w-[80px]">
+                    <div class="bg-slate-100 rounded h-1.5 overflow-hidden mt-1"><div class="h-full rounded bg-emerald-600" style="width:80%"></div></div>
+                    <span class="text-[10px] text-slate-500">80%</span>
+                  </div>
+                </td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">On track</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Class 9-A</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">Ch 3: Composition Essay</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">
+                  <div class="min-w-[80px]">
+                    <div class="bg-slate-100 rounded h-1.5 overflow-hidden mt-1"><div class="h-full rounded bg-emerald-600" style="width:55%"></div></div>
+                    <span class="text-[10px] text-slate-500">55%</span>
+                  </div>
+                </td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">Behind</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HOMEWORK -->
+      <div class="page hidden" id="page-homework">
+        <div class="flex justify-between items-center mb-2">
+          <div class="text-[12px] font-semibold text-slate-900 my-2">Assign Homework & Submissions</div>
+          <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150" onclick="openAssignHwModal()">+ Assign HW ↗</button>
+        </div>
+        <div class="border border-slate-100 rounded-lg overflow-hidden mb-2.5">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Class</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Subject</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Title</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Due Date</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Submissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hw in homeworks %}
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ hw.school_class.name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ hw.subject.name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ hw.title }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ hw.due_date }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-sky-100 text-sky-700">{{ hw.submissions.count }} submitted</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="border border-slate-100 rounded-lg p-3 bg-white mt-2.5">
+          <h4 class="text-[12px] font-semibold text-slate-900 mb-2">Submissions Queue</h4>
+          <table class="w-full border-collapse text-[11px] mt-1.5">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Student</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">HW Title</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Submission Content</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sub in hw_submissions %}
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ sub.student.first_name }} {{ sub.student.last_name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ sub.homework.title }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><i class="text-slate-500">"{{ sub.content|truncatechars:50 }}"</i></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">
+                  <button class="bg-none border border-slate-200 rounded px-2.5 py-1 text-[11px] cursor-pointer text-slate-600 hover:bg-slate-50" onclick="openGradeModal('{{ sub.id }}', '{{ sub.student.first_name }} {{ sub.student.last_name }}')">Grade Essay</button>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="4" class="text-center text-slate-400 py-4">No pending homework submissions</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MARKS ENTRY -->
+      <div class="page hidden" id="page-marks">
+        <div class="flex justify-between items-center mb-2">
+          <div class="text-[12px] font-semibold text-slate-900 my-2">Term Examination Marks Entry</div>
+          <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150" onclick="saveGrades()">Save Marks ↗</button>
+        </div>
+        <div class="border border-slate-100 rounded-lg overflow-hidden">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Roll</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Name</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">MCQ Score /30</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Written Score /70</th>
+              </tr>
+            </thead>
+            <tbody id="grades-list">
+              {% for s in class_students %}
+              <tr data-student-id="{{ s.user.id }}">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ s.roll }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ s.user.first_name }} {{ s.user.last_name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><input type="number" class="mcq-input w-[55px] px-1 py-0.5 border border-slate-200 rounded outline-none" value="26" min="0" max="30"></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><input type="number" class="written-input w-[55px] px-1 py-0.5 border border-slate-200 rounded outline-none" value="58" min="0" max="70"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="page hidden" id="page-results">
+        <div class="border border-slate-100 rounded-lg overflow-hidden">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Student</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Exam Term</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Subject</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Total /100</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Letter Grade</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">GPA GP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for g in student_grades %}
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ g.student.first_name }} {{ g.student.last_name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ g.exam_term }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ g.subject.name }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><b>{{ g.total_marks }}</b></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">{{ g.letter_grade }}</span></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ g.grade_point }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="page hidden" id="page-messages">
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-message text-xs" aria-hidden="true"></i> Student Communication Inbox</h4>
+            <div class="space-y-2 mt-2">
+              {% for msg in chat_messages %}
+              <div class="flex gap-2 py-2 border-b border-slate-100">
+                <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-medium shrink-0">RB</div>
+                <div class="msg-body">
+                  <p class="text-[11px] text-slate-900 font-semibold">{{ msg.sender.first_name }} {{ msg.sender.last_name }}</p>
+                  <span class="text-[10px] text-slate-600">{{ msg.content }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2">Send Message / Response</h4>
+            <form id="msg-form" method="POST">
+              {% csrf_token %}
+              <div class="mb-2">
+                <label class="text-[11px] text-slate-600 block mb-1">Send To Student</label>
+                <select id="msg-receiver" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 bg-white outline-none">
+                  {% for s in class_students %}
+                  <option value="{{ s.user.id }}">{{ s.user.first_name }} {{ s.user.last_name }} (Roll {{ s.roll }})</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-2">
+                <label class="text-[11px] text-slate-600 block mb-1">Message Text</label>
+                <textarea id="msg-content" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none h-[80px] resize-none" placeholder="Type message..."></textarea>
+              </div>
+              <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150 w-full" type="button" onclick="sendMessage()">Send Message ↗</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTICE -->
+      <div class="page hidden" id="page-notice">
+        <div class="border border-slate-100 rounded-lg overflow-hidden">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Title</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Publish Date</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Target</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for n in notices %}
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><b>{{ n.title }}</b></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ n.publish_date }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ n.target }}</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium {% if n.priority == 'HIGH' %}bg-red-100 text-red-700{% else %}bg-sky-100 text-sky-700{% endif %}">{{ n.priority }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEAVE -->
+      <div class="page hidden" id="page-leave">
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-calendar-off text-xs" aria-hidden="true"></i> Apply Leave Form</h4>
+            <div class="mb-2">
+              <label class="text-[11px] text-slate-600 block mb-1">Leave Type</label>
+              <select id="leave-type" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 bg-white outline-none">
+                <option value="Casual Leave">Casual Leave</option>
+                <option value="Sick Leave">Sick Leave</option>
+                <option value="Annual Leave">Annual Leave</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5 mb-2">
+              <div>
+                <label class="text-[11px] text-slate-600 block mb-1">From</label>
+                <input type="date" id="leave-from" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none">
+              </div>
+              <div>
+                <label class="text-[11px] text-slate-600 block mb-1">To</label>
+                <input type="date" id="leave-to" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="text-[11px] text-slate-600 block mb-1">Reason</label>
+              <textarea id="leave-reason" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none h-[50px] resize-none" placeholder="Reason..."></textarea>
+            </div>
+            <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150 w-full" onclick="submitLeave()">Submit Application ↗</button>
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2">My Leave Application History</h4>
+            <div class="border border-slate-100 rounded-lg overflow-hidden mt-2">
+              <table class="w-full border-collapse text-[11px]">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-100">
+                    <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Type</th>
+                    <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">From</th>
+                    <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">To</th>
+                    <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="leave-history-list">
+                  {% for l in teacher_leaves %}
+                  <tr class="hover:bg-slate-50/50">
+                    <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ l.leave_type }}</td>
+                    <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ l.start_date }}</td>
+                    <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">{{ l.end_date }}</td>
+                    <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">
+                      {% if l.status == 'APPROVED' %}
+                        <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Approved</span>
+                      {% elif l.status == 'REJECTED' %}
+                        <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-700">Rejected</span>
+                      {% else %}
+                        <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">Pending</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SALARY SLIPS -->
+      <div class="page hidden" id="page-salary">
+        <div class="grid grid-cols-4 gap-2 mb-3.5">
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Basic Salary</div>
+            <div class="text-lg font-bold text-slate-900">৳15K</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">Per month</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Allowances</div>
+            <div class="text-lg font-bold text-slate-900">৳2.5K</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">House + transport</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Deductions</div>
+            <div class="text-lg font-bold text-slate-900">৳500</div>
+            <div class="text-[10px] text-amber-700 mt-0.5">1 late arrival</div>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
+            <div class="text-[10px] text-slate-400 mb-0.5">Net Salary</div>
+            <div class="text-lg font-bold text-slate-900">৳17K</div>
+            <div class="text-[10px] text-emerald-700 mt-0.5">June 2026</div>
+          </div>
+        </div>
+        <div class="border border-slate-100 rounded-lg overflow-hidden">
+          <table class="w-full border-collapse text-[11px]">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Month</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Basic</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Allowance</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Deductions</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Net Pay</th>
+                <th class="px-2.5 py-1.5 text-left text-slate-600 font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">June 2026</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳15,000</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳2,500</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳500</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><b>৳17,000</b></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Paid</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50/50">
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">May 2026</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳15,000</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳2,500</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">৳0</td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><b>৳17,500</b></td>
+                <td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Paid</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="page hidden" id="page-profile">
+        <div class="grid grid-cols-2 gap-2.5 mb-2.5">
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-[52px] h-[52px] border-radius-[50%] bg-emerald-100 text-emerald-700 flex items-center justify-center text-base font-semibold rounded-full">FK</div>
+              <div>
+                <p class="text-[13px] font-semibold text-slate-900">{{ user.first_name }} {{ user.last_name }}</p>
+                <span class="text-[11px] text-slate-500">{{ teacher_profile.designation }}</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Employee ID</span><span class="text-slate-900 font-medium">TCH-0042</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Joining Date</span><span class="text-slate-900 font-medium">{{ teacher_profile.joining_date }}</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Department</span><span class="text-slate-900 font-medium">{{ teacher_profile.department }}</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Phone</span><span class="text-slate-900 font-medium">{{ teacher_profile.phone }}</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">Email</span><span class="text-slate-900 font-medium">{{ user.email }}</span></div>
+          </div>
+          <div class="border border-slate-100 rounded-lg p-3 bg-white">
+            <h4 class="text-[12px] font-semibold text-slate-900 mb-2"><i class="ti ti-file text-xs" aria-hidden="true"></i> Uploaded Documents</h4>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">NID Copy</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Uploaded</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">HSC Certificate</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Uploaded</span></div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100 text-[11px]"><span class="text-slate-600">BEd Certificate</span><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700">Uploaded</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="page hidden" id="page-password">
+        <div class="border border-slate-100 rounded-lg p-3 bg-white max-w-[360px]">
+          <h4 class="text-[12px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><i class="ti ti-lock text-xs" aria-hidden="true"></i> Change Password</h4>
+          <div class="mb-2.5 mt-2">
+            <div class="text-[11px] text-slate-500 mb-1">Current Password</div>
+            <input type="password" placeholder="••••••••" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2 outline-none">
+          </div>
+          <div class="mb-2.5">
+            <div class="text-[11px] text-slate-500 mb-1">New Password</div>
+            <input type="password" placeholder="Min. 8 characters" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2 outline-none">
+          </div>
+          <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-[11px] cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150">Update Password</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Assign Homework Modal -->
+<div class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-[1.5px] z-50 flex items-center justify-center" id="hw-overlay" onclick="closeAssignHwModal(event)">
+  <div class="w-[360px] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden" onclick="event.stopPropagation()">
+    <div class="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
+      <h4 class="text-xs font-semibold text-slate-900">Assign Homework Assignment</h4>
+      <span class="cursor-pointer text-base text-slate-500 font-bold" onclick="closeAssignHwModal(null)">&times;</span>
+    </div>
+    <div class="p-4 text-xs">
+      <form method="POST" action="{% url 'teacher_portal' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="assign_homework">
+        
+        <label class="font-medium text-slate-600">Target Class</label>
+        <select name="school_class" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 bg-white outline-none">
+          <option value="Class 8-B">Class 8-B</option>
+          <option value="Class 7-A">Class 7-A</option>
+        </select>
+        
+        <label class="font-medium text-slate-600">Subject</label>
+        <select name="subject" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 bg-white outline-none">
+          <option value="English">English</option>
+          <option value="Mathematics">Mathematics</option>
+        </select>
+        
+        <label class="font-medium text-slate-600">Homework Title</label>
+        <input type="text" name="title" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none" placeholder="e.g. Essay writing on Seasons" required>
+        
+        <label class="font-medium text-slate-600">Due Date</label>
+        <input type="date" name="due_date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none" required>
+        
+        <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-xs cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150 w-full mt-2" type="submit">Assign HW ↗</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Homework Grading Modal -->
+<div class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-[1.5px] z-50 flex items-center justify-center" id="grade-overlay" onclick="closeGradeModal(event)">
+  <div class="w-[360px] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden" onclick="event.stopPropagation()">
+    <div class="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
+      <h4 class="text-xs font-semibold text-slate-900">Grade Student Submission</h4>
+      <span class="cursor-pointer text-base text-slate-500 font-bold" onclick="closeGradeModal(null)">&times;</span>
+    </div>
+    <div class="p-4 text-xs">
+      <form method="POST" action="{% url 'teacher_portal' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="grade_homework">
+        <input type="hidden" id="grade-submission-id" name="submission_id">
+        <div class="text-xs text-slate-900 mb-2">Student: <b id="grade-student-name"></b></div>
+        
+        <label class="font-medium text-slate-600">Score /20</label>
+        <input type="number" name="marks" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none" min="0" max="20" required>
+        
+        <label class="font-medium text-slate-600">Feedback</label>
+        <input type="text" name="feedback" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs mt-1 mb-2.5 outline-none" placeholder="Good work / Need improvement" required>
+        
+        <button class="bg-emerald-100 text-emerald-700 border border-emerald-700 rounded px-3 py-1.5 text-xs cursor-pointer font-medium hover:bg-emerald-200 transition-colors duration-150 w-full mt-2" type="submit">Submit Grade ↗</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const csrfToken = "{{ csrf_token }}";
+
+function go(id, el) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.add('hidden');
+  });
+  // Show active page
+  const page = document.getElementById('page-' + id);
+  if (page) {
+    page.classList.remove('hidden');
+  }
+  
+  // Update active sidebar item
+  document.querySelectorAll('.sb-item').forEach(i => {
+    i.classList.remove('bg-emerald-500/10', 'text-emerald-400', 'font-medium', 'mx-2');
+    i.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200');
+  });
+  if (el) {
+    el.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200');
+    el.classList.add('bg-emerald-500/10', 'text-emerald-400', 'font-medium', 'mx-2');
+  }
+  
+  const titles = {
+    home: 'My Dashboard',
+    myatt: 'My Attendance',
+    stuatt: 'Student Attendance',
+    routine: 'My Routine',
+    syllabus: 'Syllabus Progress',
+    homework: 'Homework',
+    marks: 'Marks Entry',
+    results: 'Student Results',
+    messages: 'Messages',
+    notice: 'Notice Board',
+    leave: 'Leave Apply',
+    salary: 'Salary Slips',
+    profile: 'My Profile',
+    password: 'Change Password'
+  };
+  document.getElementById('pg-title').textContent = titles[id] || id;
+}
+
+// Attendance POST
+function saveClassAttendance() {
+  const selectedClass = document.getElementById('att-class-select').value;
+  const rows = document.querySelectorAll('#att-student-list tr');
+  const records = [];
+  rows.forEach(r => {
+    const studentId = r.getAttribute('data-student-id');
+    const status = r.querySelector('.att-status-select').value;
+    records.push({student_id: studentId, status: status});
+  });
+
+  fetch("{% url 'mark_attendance_api' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({
+      school_class: selectedClass,
+      records: records
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || "Attendance saved successfully!");
+  });
+}
+
+// Grades POST
+function saveGrades() {
+  const rows = document.querySelectorAll('#grades-list tr');
+  const records = [];
+  rows.forEach(r => {
+    const studentId = r.getAttribute('data-student-id');
+    const MCQ = r.querySelector('.mcq-input').value;
+    const written = r.querySelector('.written-input').value;
+    records.push({student_id: studentId, mcq: MCQ, written: written});
+  });
+
+  fetch("{% url 'save_marks_api' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({
+      subject: 'English',
+      records: records
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || "Grades processed successfully!");
+  });
+}
+
+// Message Chat
+function sendMessage() {
+  const receiverId = document.getElementById('msg-receiver').value;
+  const content = document.getElementById('msg-content').value.trim();
+  if(!content) return;
+
+  fetch("{% url 'send_message_api' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({
+      receiver_id: receiverId,
+      content: content
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || "Message sent!");
+    document.getElementById('msg-content').value = '';
+  });
+}
+
+// Submit Leave Application
+function submitLeave() {
+  const type = document.getElementById('leave-type').value;
+  const from = document.getElementById('leave-from').value;
+  const to = document.getElementById('leave-to').value;
+  const reason = document.getElementById('leave-reason').value.trim();
+
+  if(!from || !to || !reason) {
+    alert("Please fill in all leave fields.");
+    return;
+  }
+
+  fetch("{% url 'apply_leave_api' %}", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({
+      leave_type: type,
+      start_date: from,
+      end_date: to,
+      reason: reason
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || "Application submitted!");
+    
+    // Add row dynamically to history list
+    const tbody = document.getElementById('leave-history-list');
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50/50";
+    tr.innerHTML = `<td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">${type}</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">${from}</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900">${to}</td><td class="px-2.5 py-1.5 border-b border-slate-100 text-slate-900"><span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-amber-100 text-amber-700">Pending</span></td>`;
+    tbody.prepend(tr);
+    
+    // Clear inputs
+    document.getElementById('leave-from').value = '';
+    document.getElementById('leave-to').value = '';
+    document.getElementById('leave-reason').value = '';
+  });
+}
+
+function openAssignHwModal() {
+  document.getElementById('hw-overlay').classList.remove('hidden');
+  document.getElementById('hw-overlay').classList.add('flex');
+}
+function closeAssignHwModal(e) {
+  if(!e || e.target === document.getElementById('hw-overlay')) {
+    document.getElementById('hw-overlay').classList.remove('flex');
+    document.getElementById('hw-overlay').classList.add('hidden');
+  }
+}
+
+function openGradeModal(subId, name) {
+  document.getElementById('grade-submission-id').value = subId;
+  document.getElementById('grade-student-name').textContent = name;
+  document.getElementById('grade-overlay').classList.remove('hidden');
+  document.getElementById('grade-overlay').classList.add('flex');
+}
+function closeGradeModal(e) {
+  if(!e || e.target === document.getElementById('grade-overlay')) {
+    document.getElementById('grade-overlay').classList.remove('flex');
+    document.getElementById('grade-overlay').classList.add('hidden');
+  }
+}
+</script>
+</body>
+</html>

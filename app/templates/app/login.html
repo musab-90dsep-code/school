@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Portal Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="font-sans bg-[radial-gradient(circle_at_top_right,_#e0e7ff_0%,_#ffffff_60%,_#e0f2fe_100%)] flex flex-col items-center justify-center min-h-screen text-slate-900 p-5">
+
+<div class="w-full max-w-[420px] bg-white/85 backdrop-blur-md border border-white/50 rounded-2xl p-[30px] shadow-2xl">
+  <div class="text-center mb-6">
+    <i class="ti ti-school text-4xl text-indigo-600 mb-2 block" aria-hidden="true"></i>
+    <h2 class="text-xl font-bold text-slate-900">School Management System</h2>
+    <p class="text-xs text-slate-600 mt-1">Sign in to access your dashboard</p>
+  </div>
+
+  {% if error %}
+    <div class="bg-red-100 text-red-700 p-2 rounded-md text-xs mb-4 text-center border border-red-200">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="mb-4 relative">
+      <label class="text-[11px] font-medium text-slate-600 mb-1 block" for="username">Username</label>
+      <div class="relative flex items-center">
+        <i class="ti ti-user absolute left-3 text-slate-400 text-base" aria-hidden="true"></i>
+        <input type="text" id="username" name="username" class="w-full py-2.5 pl-9 pr-3 border border-slate-300 rounded-lg text-sm outline-none bg-white text-slate-900 focus:border-indigo-600 focus:ring-3 focus:ring-indigo-600/15 transition-all duration-150" placeholder="Enter username" required>
+      </div>
+    </div>
+
+    <div class="mb-4 relative">
+      <label class="text-[11px] font-medium text-slate-600 mb-1 block" for="password">Password</label>
+      <div class="relative flex items-center">
+        <i class="ti ti-lock absolute left-3 text-slate-400 text-base" aria-hidden="true"></i>
+        <input type="password" id="password" name="password" class="w-full py-2.5 pl-9 pr-3 border border-slate-300 rounded-lg text-sm outline-none bg-white text-slate-900 focus:border-indigo-600 focus:ring-3 focus:ring-indigo-600/15 transition-all duration-150" placeholder="••••••••" required>
+      </div>
+    </div>
+
+    <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white border-none rounded-lg text-sm font-semibold cursor-pointer mt-2.5 transition-colors duration-150">Sign In</button>
+  </form>
+
+  <div class="mt-6 border-t border-black/5 pt-5">
+    <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3 text-center">Quick Demo Sign In</div>
+    <div class="grid grid-cols-3 gap-2">
+      <button class="bg-slate-50 border border-slate-200 rounded-lg py-2 px-1 text-[11px] cursor-pointer text-center text-slate-600 hover:bg-white hover:border-indigo-600 hover:text-indigo-600 transition-all duration-150" onclick="quickFill('admin', 'admin123')">
+        <i class="ti ti-shield-lock text-sm block mb-1" aria-hidden="true"></i>
+        Admin
+      </button>
+      <button class="bg-slate-50 border border-slate-200 rounded-lg py-2 px-1 text-[11px] cursor-pointer text-center text-slate-600 hover:bg-white hover:border-indigo-600 hover:text-indigo-600 transition-all duration-150" onclick="quickFill('fatema', 'teacher123')">
+        <i class="ti ti-briefcase text-sm block mb-1" aria-hidden="true"></i>
+        Teacher
+      </button>
+      <button class="bg-slate-50 border border-slate-200 rounded-lg py-2 px-1 text-[11px] cursor-pointer text-center text-slate-600 hover:bg-white hover:border-indigo-600 hover:text-indigo-600 transition-all duration-150" onclick="quickFill('rahima', 'student123')">
+        <i class="ti ti-user text-sm block mb-1" aria-hidden="true"></i>
+        Student
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function quickFill(user, pass) {
+    document.getElementById('username').value = user;
+    document.getElementById('password').value = pass;
+  }
+</script>
+</body>
+</html>

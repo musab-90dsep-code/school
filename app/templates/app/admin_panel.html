@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SchoolAdmin Panel — Premium Upgraded</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Custom Scrollbar for sleek look */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-[#f8fafc] h-screen w-screen overflow-hidden antialiased text-slate-800 flex">
+
+<h2 class="sr-only">School management system admin panel with sidebar navigation and multiple feature pages</h2>
+
+<div class="flex w-full h-full text-[13px] relative">
+  
+  <div class="w-[220px] min-w-[220px] bg-slate-900 flex flex-col justify-between text-slate-400">
+    <div class="flex flex-col overflow-y-auto h-full">
+      <div class="p-4 border-b border-slate-800 flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-sky-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-sky-500/20">S</div>
+        <div>
+          <p class="text-[13px] font-bold text-white tracking-wide">SchoolAdmin</p>
+          <span class="text-[10px] text-slate-500 block truncate max-w-[140px]">Super Admin ({{ user.username }})</span>
+        </div>
+      </div>
+
+      <div class="py-3 space-y-4">
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Overview</div>
+          <div class="sb-item flex items-center gap-2.5 px-4 py-2 mx-2 rounded-lg cursor-pointer bg-sky-500/10 text-sky-400 font-medium transition-all duration-200" onclick="showPage('dashboard',this)">
+            <i class="ti ti-layout-dashboard text-base"></i> Dashboard
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Academic</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('students',this)"><i class="ti ti-users text-base"></i> Students</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('teachers',this)"><i class="ti ti-school text-base"></i> Teachers</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('classes',this)"><i class="ti ti-calendar text-base"></i> Classes & Routine</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('exam',this)"><i class="ti ti-file-text text-base"></i> Exam & Results</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Attendance</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('attendance',this)"><i class="ti ti-fingerprint text-base"></i> Biometric Attend.</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('leave',this)"><i class="ti ti-calendar-off text-base"></i> Leave Management</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Finance</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('fees',this)"><i class="ti ti-credit-card text-base"></i> Fee Management</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('payroll',this)"><i class="ti ti-cash text-base"></i> Teacher Payroll</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('expenses',this)"><i class="ti ti-receipt text-base"></i> Expenses</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Communication</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('notice',this)"><i class="ti ti-speakerphone text-base"></i> Notice Board</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('sms',this)"><i class="ti ti-message text-base"></i> SMS / Alerts</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('parents',this)"><i class="ti ti-heart text-base"></i> Parent Portal</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">Reports</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('reports',this)"><i class="ti ti-chart-bar text-base"></i> Reports & Certs</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-[10px] font-semibold text-slate-600 px-4 mb-1 uppercase tracking-widest">System</div>
+          <div class="space-y-0.5 px-2">
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('roles',this)"><i class="ti ti-lock text-base"></i> Roles & Permissions</div>
+            <div class="sb-item flex items-center gap-2.5 px-3 py-1.5 rounded-lg cursor-pointer text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition-all duration-150" onclick="showPage('settings',this)"><i class="ti ti-settings text-base"></i> System & Logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-3 border-t border-slate-800 bg-slate-950/40">
+      <a href="{% url 'logout' %}" class="no-underline">
+        <div class="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-rose-400 hover:bg-rose-500/10 transition-all duration-150 font-medium">
+          <i class="ti ti-logout text-base"></i> Sign Out
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="flex-1 flex flex-col h-full overflow-hidden bg-[#f8fafc]">
+    <div class="flex items-center justify-between px-6 py-3.5 border-b border-slate-200/60 bg-white z-10 shadow-sm shadow-slate-100/40 shrink-0">
+      <div class="text-[16px] font-bold text-slate-900 tracking-tight" id="page-title">Dashboard</div>
+      <div class="flex items-center gap-4">
+        <div onclick="openSearchModal()" class="flex items-center gap-2 bg-slate-100 border border-slate-200/60 rounded-xl px-3 py-1.5 text-slate-400 cursor-pointer hover:bg-slate-200/50 hover:text-slate-500 transition-all duration-200 w-[210px]">
+          <i class="ti ti-search text-sm"></i>
+          <span class="text-[11px] font-medium">Search anything... (Ctrl+K)</span>
+        </div>
+        <div class="relative p-1 rounded-lg hover:bg-slate-100 cursor-pointer transition-colors">
+          <i class="ti ti-bell text-xl text-slate-600"></i>
+          <span class="absolute top-0 right-0 bg-rose-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold border-2 border-white">3</span>
+        </div>
+        <div class="h-5 w-[1px] bg-slate-200"></div>
+        <div class="flex items-center gap-2 cursor-pointer group">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 text-white flex items-center justify-center text-[12px] font-bold shadow-md shadow-sky-500/10">SA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6 flex-1 overflow-y-auto space-y-6">
+
+      <div class="page space-y-6" id="page-dashboard">
+        
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg shadow-sky-500/10 flex flex-col md:flex-row justify-between items-start md:items-center relative overflow-hidden">
+          <div class="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+          <div class="relative z-10 space-y-1">
+            <h3 class="text-lg font-bold tracking-tight">Welcome to SchoolAdmin Workspace</h3>
+            <p class="text-xs text-sky-100/90 max-w-[540px]">Manage student registration datasets, academic scheduling routines, biometric check-ins, and tuition accounting balances seamlessly.</p>
+          </div>
+          <div class="z-10 bg-white/10 backdrop-blur-md rounded-xl px-4 py-2 border border-white/20 text-center shrink-0 mt-4 md:mt-0">
+            <span class="text-[10px] text-sky-200 block font-semibold uppercase tracking-wider">System Status</span>
+            <span class="text-xs font-bold text-white flex items-center justify-center gap-1.5 mt-0.5"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 100% Online</span>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-4 gap-2.5">
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Total Students</span>
+                <div class="p-1 bg-sky-50 text-sky-600 rounded-md"><i class="ti ti-users text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ students_count }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-emerald-600 font-semibold flex items-center gap-0.5">🌱 Active in classes</div>
+              <svg class="w-full h-4 mt-0.5 text-sky-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,25 Q15,10 30,20 T60,5 T90,15 L100,8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Total Teachers</span>
+                <div class="p-1 bg-indigo-50 text-indigo-600 rounded-md"><i class="ti ti-school text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ teachers_count }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-emerald-600 font-semibold flex items-center gap-0.5">💼 Active staff logs</div>
+              <svg class="w-full h-4 mt-0.5 text-indigo-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,20 Q20,25 40,15 T80,10 L100,4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Attendance Rate</span>
+                <div class="p-1 bg-amber-50 text-amber-600 rounded-md"><i class="ti ti-fingerprint text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ attendance_pct }}%</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-amber-600 font-semibold flex items-center gap-0.5">⏱️ Daily biometric sync</div>
+              <svg class="w-full h-4 mt-0.5 text-amber-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,15 Q30,5 60,20 T100,10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Fees (June)</span>
+                <div class="p-1 bg-emerald-50 text-emerald-600 rounded-md"><i class="ti ti-credit-card text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">৳{{ collected_fees }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-rose-600 font-semibold flex items-center gap-0.5">৳{{ outstanding_fees }} outstanding</div>
+              <svg class="w-full h-4 mt-0.5 text-emerald-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,25 Q20,10 40,20 T80,5 L100,2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary KPI Grid -->
+        <div class="grid grid-cols-4 gap-2.5 mt-2.5">
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Class Routines</span>
+                <div class="p-1 bg-violet-50 text-violet-600 rounded-md"><i class="ti ti-calendar-time text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ routine_slots|length }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-violet-600 font-semibold flex items-center gap-0.5">📅 Scheduled class periods</div>
+              <svg class="w-full h-4 mt-0.5 text-violet-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,15 Q25,25 50,5 T75,20 L100,12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Leave Requests</span>
+                <div class="p-1 bg-amber-50 text-amber-600 rounded-md"><i class="ti ti-calendar-off text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ leaves|length }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-amber-600 font-semibold flex items-center gap-0.5">📋 Reviews & approvals</div>
+              <svg class="w-full h-4 mt-0.5 text-amber-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,25 Q30,5 60,20 T100,10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Notices</span>
+                <div class="p-1 bg-rose-50 text-rose-600 rounded-md"><i class="ti ti-speakerphone text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ notices|length }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-rose-600 font-semibold flex items-center gap-0.5">📢 Global notice posts</div>
+              <svg class="w-full h-4 mt-0.5 text-rose-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,10 Q25,25 50,5 T75,18 L100,14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Expenses</span>
+                <div class="p-1 bg-emerald-50 text-emerald-600 rounded-md"><i class="ti ti-receipt text-sm"></i></div>
+              </div>
+              <div class="text-lg font-bold text-slate-900 tracking-tight">{{ expenses|length }}</div>
+            </div>
+            <div class="mt-1">
+              <div class="text-[8px] text-emerald-600 font-semibold flex items-center gap-0.5">💸 Logged ledger entries</div>
+              <svg class="w-full h-4 mt-0.5 text-emerald-400" viewBox="0 0 100 30" fill="none" preserveAspectRatio="none">
+                <path d="M0,22 Q30,10 60,25 T100,8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Alerts and Events Feed -->
+        <div class="grid grid-cols-2 gap-6">
+          <div class="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2"><span class="w-1.5 h-3 bg-rose-500 rounded-full"></span> Recent System Alerts</h4>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-[11px]">RI</div>
+                  <div>
+                    <span class="text-slate-900 font-semibold block">Rafi Islam (Class 7)</span>
+                    <span class="text-[10px] text-slate-500 block mt-0.5">Consecutive unexcused absences</span>
+                  </div>
+                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-rose-100 text-rose-700">Absent 3 days</span>
+              </div>
+              
+              <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-[11px]"><i class="ti ti-receipt text-xs"></i></div>
+                  <div>
+                    <span class="text-slate-900 font-semibold block">Fee Due Invoices</span>
+                    <span class="text-[10px] text-slate-500 block mt-0.5">{{ unpaid_invoice_count }} students outstanding balance</span>
+                  </div>
+                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-amber-100 text-amber-700">Pending Notice</span>
+              </div>
+
+              <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-[11px]"><i class="ti ti-calendar text-xs"></i></div>
+                  <div>
+                    <span class="text-slate-900 font-semibold block">Annual Exam Schedule</span>
+                    <span class="text-[10px] text-slate-500 block mt-0.5">Roster settings published globally</span>
+                  </div>
+                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-sky-100 text-sky-700">Published</span>
+              </div>
+
+              <div class="flex justify-between items-center p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[11px]"><i class="ti ti-cash text-xs"></i></div>
+                  <div>
+                    <span class="text-slate-900 font-semibold block">Staff Payroll Slips</span>
+                    <span class="text-[10px] text-slate-500 block mt-0.5">June processing cycle finalized</span>
+                  </div>
+                </div>
+                <span class="text-[10px] px-2.5 py-1 rounded-full font-bold bg-emerald-100 text-emerald-700">Processed</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Upcoming Academic Events</h4>
+            <div class="space-y-3">
+              <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors flex items-center justify-between">
+                <div class="space-y-0.5">
+                  <span class="text-slate-900 font-semibold block">Mid-term Examination Block</span>
+                  <span class="text-[10px] text-slate-500 block">Classrooms scheduling routine blocks active</span>
+                </div>
+                <span class="text-[10px] text-slate-500 bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg font-bold">Jun 20, 2026</span>
+              </div>
+
+              <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors flex items-center justify-between">
+                <div class="space-y-0.5">
+                  <span class="text-slate-900 font-semibold block">Parent-Teacher Council General Assembly</span>
+                  <span class="text-[10px] text-slate-500 block">Relational feedback session check-ins</span>
+                </div>
+                <span class="text-[10px] text-slate-500 bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg font-bold">Jun 25, 2026</span>
+              </div>
+
+              <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors flex items-center justify-between">
+                <div class="space-y-0.5">
+                  <span class="text-slate-900 font-semibold block">Annual Sports & Cultural Day</span>
+                  <span class="text-[10px] text-slate-500 block">Outdoor campus track registration metrics</span>
+                </div>
+                <span class="text-[10px] text-slate-500 bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg font-bold">Jul 03, 2026</span>
+              </div>
+
+              <div class="p-3 bg-slate-50 border border-slate-100 rounded-xl hover:bg-slate-50/50 transition-colors flex items-center justify-between">
+                <div class="space-y-0.5">
+                  <span class="text-slate-900 font-semibold block">Term Tuition Fee Collection Deadline</span>
+                  <span class="text-[10px] text-slate-500 block">MFS Checkout API gateway sweeps active</span>
+                </div>
+                <span class="text-[10px] text-slate-500 bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg font-bold">Jun 30, 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Operations -->
+        <div class="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="text-xs font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2"><span class="w-1.5 h-3 bg-indigo-500 rounded-full"></span> Quick Operational Actions</div>
+          <div class="flex gap-3 flex-wrap">
+            <button class="bg-sky-500 text-white shadow-md shadow-sky-500/10 rounded-xl px-4 py-2.5 text-xs font-semibold hover:bg-sky-600 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer" onclick="openAddStudentModal()">+ Add New Student Account</button>
+            <button class="bg-white border border-slate-200 text-slate-600 rounded-xl px-4 py-2.5 text-xs font-medium hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer" onclick="showPage('attendance', document.querySelector('.sb-item:nth-child(2)'))">Biometric Attendance Logs</button>
+            <button class="bg-white border border-slate-200 text-slate-600 rounded-xl px-4 py-2.5 text-xs font-medium hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer" onclick="showPage('fees')">Broadcast Fee Reminders</button>
+            <button class="bg-white border border-slate-200 text-slate-600 rounded-xl px-4 py-2.5 text-xs font-medium hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer" onclick="showPage('classes')">Publish Class Routines</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-students">
+        
+        <!-- Top KPI Grid -->
+        <div class="grid grid-cols-4 gap-4">
+          <!-- Total Students -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Students</div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">{{ students_count }}</div>
+            </div>
+            <div class="mt-2 text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
+            </div>
+          </div>
+
+          <!-- Classes -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Classes</div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">6-10</div>
+            </div>
+            <div class="mt-2 text-[10px] text-emerald-600 font-semibold">
+              5 classes
+            </div>
+          </div>
+
+          <!-- New Admission -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">New Admission</div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">38</div>
+            </div>
+            <div class="mt-2 text-[10px] text-emerald-600 font-semibold">
+              This session
+            </div>
+          </div>
+
+          <!-- TC Issued -->
+          <div class="bg-white rounded-xl p-4 border border-slate-200/60 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">TC Issued</div>
+              <div class="text-2xl font-extrabold text-slate-900 tracking-tight">12</div>
+            </div>
+            <div class="mt-2 text-[10px] text-amber-600 font-semibold">
+              This year
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 bg-gradient-to-r from-sky-50/80 to-indigo-50/20 border border-sky-100/60 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between shadow-sm gap-4">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-sky-500/10 text-sky-600 rounded-xl"><i class="ti ti-file-spreadsheet text-xl"></i></div>
+            <div>
+              <div class="font-bold text-slate-900 text-xs">Bulk Student Database CSV Import</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Upload structured Excel data columns to instantly register and index student accounts.</div>
+            </div>
+          </div>
+          <form method="POST" enctype="multipart/form-data" class="flex gap-2 items-center bg-white p-1.5 rounded-xl border border-slate-200/60 shadow-sm w-full md:w-auto">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="bulk_import">
+            <input type="file" name="csv_file" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 cursor-pointer" required>
+            <button type="submit" class="bg-slate-900 text-white rounded-lg px-3 py-1.5 text-xs font-semibold hover:bg-slate-800 hover:shadow transition-all duration-150 cursor-pointer">Process File</button>
+          </form>
+        </div>
+
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Student Registration Directory</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Manage master logs, class enrollments, and guardian contacts.</p>
+          </div>
+          <button class="bg-sky-500 text-white rounded-xl px-3.5 py-2 text-xs font-semibold shadow-md hover:bg-sky-600 hover:-translate-y-0.5 cursor-pointer transition-all duration-150" onclick="openAddStudentModal()">+ Register Student</button>
+        </div>
+
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Student Name</th>
+                <th class="px-4 py-3 text-left">Roll Number</th>
+                <th class="px-4 py-3 text-left">Class & Section</th>
+                <th class="px-4 py-3 text-left">Guardian Contact</th>
+                <th class="px-4 py-3 text-left">Status</th>
+                <th class="px-4 py-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for s in students %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ s.user.first_name }} {{ s.user.last_name }}</td>
+                <td class="px-4 py-3 text-slate-500"><span class="font-mono bg-slate-50 border border-slate-150 px-1.5 py-0.5 rounded text-[10px]">{{ s.roll }}</span></td>
+                <td class="px-4 py-3 text-slate-700 font-medium"><span class="bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-lg text-[10px] font-semibold">{{ s.class_section }}</span></td>
+                <td class="px-4 py-3 text-slate-600">{{ s.guardian_name }}</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Active</span></td>
+                <td class="px-4 py-3 text-center">
+                  <button class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all duration-150 cursor-pointer shadow-sm hover:shadow-sm" onclick="alert('Viewing profile matrix for student token: {{ s.user.username }}')">View Profile</button>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="6" class="px-4 py-8 text-center text-slate-400 font-medium">No records found matching current session criteria.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Bottom Checklists Grid -->
+        <div class="grid grid-cols-2 gap-6 mt-4">
+          <!-- Student Features -->
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-2.5">
+            <h5 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Student Features</h5>
+            <ul class="text-[11px] text-slate-600 space-y-1.5">
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Profile + photo + NID guardian</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Class/section assignment</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Admission & TC management</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> ID card generate (PDF)</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Document upload & store</li>
+            </ul>
+          </div>
+
+          <!-- Search & Filter -->
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-2.5">
+            <h5 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><span class="w-1.5 h-3 bg-indigo-500 rounded-full"></span> Search & Filter</h5>
+            <ul class="text-[11px] text-slate-600 space-y-1.5">
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> By class, section, roll</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> By active/inactive status</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> By admission year</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Export to Excel/PDF</li>
+              <li class="flex items-center gap-1.5 text-emerald-600 font-semibold"><i class="ti ti-check text-xs"></i> Bulk import via CSV</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-teachers">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-indigo-500 rounded-full"></span> Faculty Management Directory</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Manage faculty profiles, department designations, and registration cycles.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Faculty Name</th>
+                <th class="px-4 py-3 text-left">Department Focus</th>
+                <th class="px-4 py-3 text-left">Official Designation</th>
+                <th class="px-4 py-3 text-left">Joining Timeline</th>
+                <th class="px-4 py-3 text-left">Attendance Status</th>
+                <th class="px-4 py-3 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for t in teachers %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ t.user.first_name }} {{ t.user.last_name }}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ t.department }}</td>
+                <td class="px-4 py-3 text-slate-500">{{ t.designation }}</td>
+                <td class="px-4 py-3 text-slate-500 font-mono">{{ t.joining_date|date:"M Y" }}</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Present Today</span></td>
+                <td class="px-4 py-3 text-center">
+                  <button class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all duration-150 cursor-pointer shadow-sm hover:shadow-sm" onclick="alert('Viewing faculty parameters')">Details</button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-attendance">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-amber-500 rounded-full"></span> Biometric Attendance Tracker</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Real-time mapping of student clock-in triggers and check-in gateways.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Student Profile Name</th>
+                <th class="px-4 py-3 text-left">Punch Timestamp</th>
+                <th class="px-4 py-3 text-left">Gateway Method</th>
+                <th class="px-4 py-3 text-left">Status Validation</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for a in attendances %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ a.student.first_name }} {{ a.student.last_name }}</td>
+                <td class="px-4 py-3 font-mono text-slate-600">{{ a.time|time:"H:i A" }}</td>
+                <td class="px-4 py-3 text-slate-500 font-medium"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] border border-slate-200/40 font-semibold">{{ a.method }}</span></td>
+                <td class="px-4 py-3">
+                  {% if a.status == 'PRESENT' %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">On Time Present</span>
+                  {% elif a.status == 'LATE' %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700 border border-amber-100">Late Check-In</span>
+                  {% else %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-rose-50 text-rose-700 border border-rose-100">Unnotified Absent</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-leave">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-violet-500 rounded-full"></span> Leave Request & Approval Matrix</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Approve, reject, and monitor faculty leaves and sick notes.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Teacher Name</th>
+                <th class="px-4 py-3 text-left">Leave Category</th>
+                <th class="px-4 py-3 text-left">From</th>
+                <th class="px-4 py-3 text-left">To</th>
+                <th class="px-4 py-3 text-left">Reason Context</th>
+                <th class="px-4 py-3 text-left">Status</th>
+                <th class="px-4 py-3 text-center">Action Parameters</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for l in leaves %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ l.teacher.first_name }} {{ l.teacher.last_name }}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ l.leave_type }}</td>
+                <td class="px-4 py-3 font-mono text-slate-500">{{ l.start_date }}</td>
+                <td class="px-4 py-3 font-mono text-slate-500">{{ l.end_date }}</td>
+                <td class="px-4 py-3 text-slate-500 max-w-[160px] truncate" title="{{ l.reason }}">{{ l.reason }}</td>
+                <td class="px-4 py-3">
+                  {% if l.status == 'APPROVED' %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Approved</span>
+                  {% elif l.status == 'REJECTED' %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-rose-50 text-rose-700 border border-rose-100">Rejected</span>
+                  {% else %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700 border border-amber-100">Pending Review</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3 text-center">
+                  {% if l.status == 'PENDING' %}
+                    <form method="POST" action="{% url 'admin_panel' %}" class="flex items-center justify-center gap-1.5">
+                      {% csrf_token %}
+                      <input type="hidden" name="leave_id" value="{{ l.id }}">
+                      <button class="bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-[11px] font-semibold hover:shadow transition-all duration-150 cursor-pointer" type="submit" name="action" value="approve_leave">Approve</button>
+                      <button class="bg-rose-600 hover:bg-rose-700 text-white rounded-lg px-2.5 py-1 text-[11px] font-semibold hover:shadow transition-all duration-150 cursor-pointer" type="submit" name="action" value="reject_leave">Reject</button>
+                    </form>
+                  {% else %}
+                    <span class="text-slate-400 font-mono">—</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-5" id="page-fees">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-emerald-500 rounded-full"></span> Student Fees Billing Directory</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Manage tuition balances, bills generation, and payment allocations.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Student Reference</th>
+                <th class="px-4 py-3 text-left">Invoice No</th>
+                <th class="px-4 py-3 text-left">Billing Month</th>
+                <th class="px-4 py-3 text-left">Gross Amount</th>
+                <th class="px-4 py-3 text-left">Ledger Status</th>
+                <th class="px-4 py-3 text-left">Settlement Date</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for inv in invoices %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ inv.student.first_name }} {{ inv.student.last_name }}</td>
+                <td class="px-4 py-3 text-slate-500 font-mono">{{ inv.invoice_no }}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ inv.billing_month }}</td>
+                <td class="px-4 py-3 text-slate-900 font-bold">৳{{ inv.amount }}</td>
+                <td class="px-4 py-3">
+                  {% if inv.status == 'PAID' %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Paid Cleared</span>
+                  {% else %}
+                    <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-rose-50 text-rose-700 border border-rose-100">Unpaid Invoice</span>
+                  {% endif %}
+                </td>
+                <td class="px-4 py-3 text-slate-500 font-mono">{{ inv.paid_date|default:"—" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><span class="w-1.5 h-3 bg-pink-500 rounded-full"></span> Realtime MFS Payment Gateways (bKash / Nagad API)</div>
+          <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+            <table class="w-full border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                  <th class="px-4 py-3 text-left">MFS Transaction ID</th>
+                  <th class="px-4 py-3 text-left">Sender Wallet</th>
+                  <th class="px-4 py-3 text-left">Gateway Provider</th>
+                  <th class="px-4 py-3 text-left">Payload Amount</th>
+                  <th class="px-4 py-3 text-center">Manual Slip Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50/30 transition-colors">
+                  <td class="px-4 py-3 font-mono text-slate-900 font-bold">BKX9283K71</td>
+                  <td class="px-4 py-3 font-mono text-slate-600">017XXXXXXXX</td>
+                  <td class="px-4 py-3"><span class="bg-pink-600 text-white font-bold px-2.5 py-0.5 rounded-md text-[9px] tracking-wide shadow-sm shadow-pink-500/10 uppercase">bKash</span></td>
+                  <td class="px-4 py-3 font-bold text-slate-900">৳৩,৫০০</td>
+                  <td class="px-4 py-3 text-center">
+                    <button class="bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 rounded-lg px-2.5 py-1 text-[11px] font-medium transition-all duration-150 cursor-pointer shadow-sm hover:shadow-sm" onclick="alert('Verifying transaction payload slips...')">Verify Slip</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-classes">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-violet-500 rounded-full"></span> Academic Scheduling & Routines Matrix</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Control daily class scheduling routines and assigned lecture timings.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Target Class</th>
+                <th class="px-4 py-3 text-left">Weekday</th>
+                <th class="px-4 py-3 text-left">Academic Period</th>
+                <th class="px-4 py-3 text-left">Timeline Slot</th>
+                <th class="px-4 py-3 text-left">Course Subject</th>
+                <th class="px-4 py-3 text-left">Assigned Faculty</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for slot in routine_slots %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-bold text-slate-900">{{ slot.school_class.name }}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ slot.weekday }}</td>
+                <td class="px-4 py-3 text-slate-500 font-semibold">{{ slot.period_name }}</td>
+                <td class="px-4 py-3 font-mono text-slate-500">{{ slot.time_slot }}</td>
+                <td class="px-4 py-3 text-slate-700 font-semibold"><span class="bg-slate-100 px-2 py-0.5 rounded text-[10px] border border-slate-200/30">{{ slot.subject.name }}</span></td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ slot.teacher.first_name }} {{ slot.teacher.last_name }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-exam">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Performance Grading Matrix</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Dynamic GPA calculators, test marks aggregator, and academic scorecards.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Student Name</th>
+                <th class="px-4 py-3 text-left">Course Subject</th>
+                <th class="px-4 py-3 text-left">MCQ Marks</th>
+                <th class="px-4 py-3 text-left">Written Theory</th>
+                <th class="px-4 py-3 text-left">Total Aggregation</th>
+                <th class="px-4 py-3 text-left">Letter Grade</th>
+                <th class="px-4 py-3 text-left">GPA Points</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for g in grades %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ g.student.first_name }} {{ g.student.last_name }}</td>
+                <td class="px-4 py-3 text-slate-600 font-medium">{{ g.subject.name }}</td>
+                <td class="px-4 py-3 font-mono text-slate-500">{{ g.mcq_marks }}</td>
+                <td class="px-4 py-3 font-mono text-slate-500">{{ g.written_marks }}</td>
+                <td class="px-4 py-3 font-mono font-bold text-slate-900">{{ g.total_marks }}</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">{{ g.letter_grade }}</span></td>
+                <td class="px-4 py-3 font-mono font-bold text-sky-600">{{ g.grade_point }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-notice">
+        <div class="grid grid-cols-5 gap-6">
+          <div class="col-span-2 bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold mb-3 text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><i class="ti ti-speakerphone text-sky-500 text-base"></i> Create notice announcement</h4>
+              <form method="POST" action="{% url 'admin_panel' %}" class="space-y-3.5">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create_notice">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-500 block mb-1">Notice Title String</label>
+                  <input type="text" name="title" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150" placeholder="e.g. Eid Holidays Announcement" required>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Priority Hierarchy</label>
+                    <select name="priority" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150">
+                      <option value="INFO">Info Bulletin</option>
+                      <option value="LOW">Low Priority</option>
+                      <option value="MEDIUM">Medium Tier</option>
+                      <option value="HIGH">High Critical</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Audience Scope</label>
+                    <input type="text" name="target" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150" value="All System Users" required>
+                  </div>
+                </div>
+                <div>
+                  <label class="text-[10px] font-bold text-slate-500 block mb-1">Content Message</label>
+                  <textarea name="content" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150 h-[80px] resize-none" placeholder="Provide full announcement details here..." required></textarea>
+                </div>
+                <button class="bg-sky-500 text-white rounded-xl py-2 text-xs font-bold shadow-md hover:bg-sky-600 cursor-pointer transition-all duration-150 w-full" type="submit">Broadcast notice</button>
+              </form>
+            </div>
+          </div>
+          
+          <div class="col-span-3 bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col">
+            <h4 class="text-xs font-bold mb-3 text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><i class="ti ti-history text-slate-500 text-base"></i> Active Notice Pipelines Feed</h4>
+            <div class="space-y-2 overflow-y-auto flex-1 max-h-[300px] pr-1">
+              {% for n in notices %}
+              <div class="p-3 bg-slate-50/70 border border-slate-200/40 rounded-xl flex justify-between items-start hover:border-slate-350 transition-all duration-150">
+                <div>
+                  <span class="text-slate-900 font-bold block text-xs">{{ n.title }}</span>
+                  <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">{{ n.content }}</p>
+                  <span class="text-[9px] text-slate-400 font-semibold block mt-1.5">Scope Target: {{ n.target }}</span>
+                </div>
+                <span class="text-[9px] px-2.5 py-0.5 rounded-full font-bold {% if n.priority == 'HIGH' %}bg-rose-50 text-rose-700 border border-rose-100{% elif n.priority == 'MEDIUM' %}bg-amber-50 text-amber-700 border border-amber-100{% else %}bg-sky-50 text-sky-700 border border-sky-100{% endif %}">{{ n.priority }}</span>
+              </div>
+              {% empty %}
+              <div class="text-center text-slate-400 py-8 text-xs font-medium">No bulletins currently published.</div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-payroll">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-emerald-500 rounded-full"></span> Faculty Payroll Ledger</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Control operational payouts, basic allowances, and deductions tracking.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Teacher Profile</th>
+                <th class="px-4 py-3 text-left">Basic Salary</th>
+                <th class="px-4 py-3 text-left">Allowances</th>
+                <th class="px-4 py-3 text-left">Deductions</th>
+                <th class="px-4 py-3 text-left">Net Payable</th>
+                <th class="px-4 py-3 text-left">Cycle Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">Fatema Khatun</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳15,000</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳2,500</td>
+                <td class="px-4 py-3 text-rose-500 font-mono">৳500</td>
+                <td class="px-4 py-3 text-slate-900 font-bold font-mono">৳17,000</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Settled Paid</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">Md. Karim Hossain</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳18,000</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳3,000</td>
+                <td class="px-4 py-3 text-rose-500 font-mono">৳0</td>
+                <td class="px-4 py-3 text-slate-900 font-bold font-mono">৳21,000</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Settled Paid</span></td>
+              </tr>
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">Rahim Uddin</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳22,000</td>
+                <td class="px-4 py-3 text-slate-600 font-mono">৳4,000</td>
+                <td class="px-4 py-3 text-rose-500 font-mono">৳2,200</td>
+                <td class="px-4 py-3 text-slate-900 font-bold font-mono">৳23,800</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-amber-50 text-amber-700 border border-amber-100">Pending Wire</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-expenses">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-rose-500 rounded-full"></span> Institutional Expenditure Ledger</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Track school budgets, utilities bills, and operational expenses vouchers.</p>
+          </div>
+        </div>
+        <div class="bg-white border border-slate-200/60 rounded-xl overflow-hidden shadow-sm">
+          <table class="w-full border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50/50 border-b border-slate-200/60 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <th class="px-4 py-3 text-left">Category Field</th>
+                <th class="px-4 py-3 text-left">Expenditure Context</th>
+                <th class="px-4 py-3 text-left">Gross Outflow</th>
+                <th class="px-4 py-3 text-left">Logged Date</th>
+                <th class="px-4 py-3 text-left">Voucher ID</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {% for exp in expenses %}
+              <tr class="hover:bg-slate-50/30 transition-colors">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ exp.category }}</td>
+                <td class="px-4 py-3 text-slate-600">{{ exp.description }}</td>
+                <td class="px-4 py-3 font-bold font-mono text-rose-600">৳{{ exp.amount }}</td>
+                <td class="px-4 py-3 text-slate-500 font-mono">{{ exp.date }}</td>
+                <td class="px-4 py-3"><span class="bg-sky-50 text-sky-700 border border-sky-100 font-mono font-semibold px-2 py-0.5 rounded text-[10px]">{{ exp.voucher_no }}</span></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="px-4 py-8 text-center text-slate-400 font-medium">No ledger entries generated for current tracking node.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-parents">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Parent Relational Association Index</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Link parent identities to active student accounts for notification routes.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><i class="ti ti-users text-sky-500 text-base"></i> Parental Link Directory</h4>
+            <div class="border border-slate-100 rounded-xl overflow-hidden mt-3">
+              <table class="w-full border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50/50 border-b border-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                    <th class="px-4 py-3 text-left">Guardian Full Name</th>
+                    <th class="px-4 py-3 text-left">Linked Student Node</th>
+                    <th class="px-4 py-3 text-left">Verified Phone Endpoints</th>
+                    <th class="px-4 py-3 text-left">Gateway Mapping</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50/30 transition-colors">
+                    <td class="px-4 py-3 font-semibold text-slate-900">Jalal Uddin</td>
+                    <td class="px-4 py-3 text-slate-600 font-medium">Sadia Islam (Class 8-B)</td>
+                    <td class="px-4 py-3 font-mono text-slate-500">01712345678</td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Active Sync</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/30 transition-colors">
+                    <td class="px-4 py-3 font-semibold text-slate-900">Karim Ali</td>
+                    <td class="px-4 py-3 text-slate-600 font-medium">Rahima Begum (Class 7-A)</td>
+                    <td class="px-4 py-3 font-mono text-slate-500">01887654321</td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Active Sync</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 mb-2 uppercase tracking-wider"><i class="ti ti-link text-indigo-500 text-base"></i> Dynamic Map Generator</h4>
+              <p class="text-[11px] text-slate-400 leading-relaxed">Generate dynamic authentication mapping sequences for parental mobile registrations.</p>
+            </div>
+            <button class="bg-indigo-600 text-white rounded-xl py-2.5 text-xs font-bold shadow-md hover:bg-indigo-700 cursor-pointer transition-all duration-150 w-full" onclick="alert('Generating 8-digit relational sync key sequence...')">Generate Access Key</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-sms">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-sky-500 rounded-full"></span> Telephony Gateway Alerts & Sent logs</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Send bulk announcements and monitor Twilio/SSL Wireless SMS queue pipelines.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><i class="ti ti-message text-sky-500 text-base"></i> Sent SMS Transmissions</h4>
+            <div class="border border-slate-100 rounded-xl overflow-hidden mt-3">
+              <table class="w-full border-collapse text-xs">
+                <thead>
+                  <tr class="bg-slate-50/50 border-b border-slate-100 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                    <th class="px-4 py-3 text-left">Gateway Provider</th>
+                    <th class="px-4 py-3 text-left">Target Wallet/Phone</th>
+                    <th class="px-4 py-3 text-left">Payload Message Preview</th>
+                    <th class="px-4 py-3 text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  <tr class="hover:bg-slate-50/30 transition-colors">
+                    <td class="px-4 py-3 font-semibold text-slate-900">SSL Wireless Gateway</td>
+                    <td class="px-4 py-3 text-slate-600 font-mono">01712345678</td>
+                    <td class="px-4 py-3 text-slate-500 max-w-[150px] truncate" title="Your child Sadia Islam is absent today from classes.">Your child Sadia Islam is absent...</td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Sent Confirmed</span></td>
+                  </tr>
+                  <tr class="hover:bg-slate-50/30 transition-colors">
+                    <td class="px-4 py-3 font-semibold text-slate-900">Twilio SMS API</td>
+                    <td class="px-4 py-3 text-slate-600 font-mono">01887654321</td>
+                    <td class="px-4 py-3 text-slate-500 max-w-[150px] truncate" title="Tuition fee invoice for June has been published.">Tuition fee invoice for June has...</td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">Sent Confirmed</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 mb-2 uppercase tracking-wider"><i class="ti ti-credit-card text-emerald-500 text-base"></i> API Gateway Telemetry</h4>
+              <div class="mt-3 space-y-2 text-xs font-semibold text-slate-600">
+                <div class="flex justify-between py-1 border-b border-slate-100"><span>Remaining Credits</span><span class="text-slate-900 font-bold">14,230</span></div>
+                <div class="flex justify-between py-1"><span>Gateway Pulse</span><span class="text-emerald-500 font-bold">Connected</span></div>
+              </div>
+            </div>
+            <button class="bg-slate-950 text-white rounded-xl py-2.5 text-xs font-bold shadow-md hover:bg-slate-800 cursor-pointer transition-all duration-150 w-full" onclick="alert('Querying remaining balance metrics...')">Sync Gateway Logs</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-roles">
+        <div class="flex justify-between items-center py-1">
+          <div>
+            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5"><span class="w-1.5 h-3 bg-indigo-500 rounded-full"></span> Role-Based Access Privileges Mapping (RBAC)</div>
+            <p class="text-[11px] text-slate-400 mt-0.5">Control visual dashboards permission mappings and user authorization tokens.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-3.5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-900">Super Admin Group</span>
+                <span class="text-[9px] px-2.5 py-0.5 rounded-full font-bold bg-sky-50 text-sky-700 border border-sky-100">Superuser Scope</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">Absolute CRUD schema validation parameters endpoint access. Manage all modules, school settings, fee parameters, and SQLite3 database tables.</p>
+            </div>
+            <div class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-100 p-2.5 rounded-lg flex items-center gap-1.5"><i class="ti ti-check text-xs"></i> Full system access authorized</div>
+          </div>
+
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-3.5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-900">Faculty Teacher Node</span>
+                <span class="text-[9px] px-2.5 py-0.5 rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">Staff Access</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">Row level entry privileges for exam marks, student homework grades, and student clock-ins. Access assigned classes routines and leave templates.</p>
+            </div>
+            <div class="text-[10px] text-sky-700 font-semibold bg-sky-50 border border-sky-100 p-2.5 rounded-lg flex items-center gap-1.5"><i class="ti ti-check text-xs"></i> Limited academic access authorized</div>
+          </div>
+
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-3.5 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs font-bold text-slate-900">Student Account Scope</span>
+                <span class="text-[9px] px-2.5 py-0.5 rounded-full font-bold bg-amber-50 text-amber-700 border border-amber-100">Read-Only View</span>
+              </div>
+              <p class="text-[11px] text-slate-500 leading-relaxed">Read-only access vectors across dashboard telemetry logs. View timetables, grade cards, assigned homework details, and pay due tuition fee slips.</p>
+            </div>
+            <div class="text-[10px] text-amber-700 font-semibold bg-amber-50 border border-amber-100 p-2.5 rounded-lg flex items-center gap-1.5"><i class="ti ti-check text-xs"></i> Portal dashboard view authorized</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-reports">
+        <div class="grid grid-cols-2 gap-6">
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 mb-3.5 uppercase tracking-wider"><i class="ti ti-id text-sky-500 text-base"></i> ID Card & Certificate Generator</h4>
+              <form class="space-y-3.5">
+                <div>
+                  <label class="text-[10px] font-bold text-slate-500 block mb-1">Select Document Paradigm Schema</label>
+                  <select class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150">
+                    <option>Student Bulk Matrix Identity Badge (High-Res PDF)</option>
+                    <option>Formal Institutional Transfer Certificate (TC)</option>
+                    <option>Academic Performance Testimonial Template</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Target Class Allocation</label>
+                    <select class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150">
+                      <option>Class 8-B Group</option>
+                      <option>Class 7-A Group</option>
+                      <option>Class 9-A Group</option>
+                      <option>Class 10-A Group</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 block mb-1">Roll Sequence / ID Token</label>
+                    <input type="text" placeholder="e.g. 03 (Optional)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all duration-150">
+                  </div>
+                </div>
+                <button type="button" class="bg-sky-500 text-white rounded-xl py-2.5 text-xs font-bold shadow-md hover:bg-sky-600 cursor-pointer transition-all duration-150 w-full mt-2" onclick="alert('Compiling A4 vectorized layout matrices schema into PDF format pipeline.')">Render & Print Document</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 mb-3.5 uppercase tracking-wider"><i class="ti ti-chart-bar text-emerald-500 text-base"></i> Institutional Reports & Data Exports</h4>
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/40 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-150">
+                  <span class="text-xs font-semibold text-slate-700">Master Attendance Matrix Ledger (June Cycle)</span>
+                  <button class="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[10px] px-3 py-1.5 rounded-lg cursor-pointer hover:shadow transition-all duration-150">Export .XLSX</button>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/40 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-150">
+                  <span class="text-xs font-semibold text-slate-700">School Consolidated Financial Statement</span>
+                  <button class="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[10px] px-3 py-1.5 rounded-lg cursor-pointer hover:shadow transition-all duration-150">Export .CSV</button>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/40 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-150">
+                  <span class="text-xs font-semibold text-slate-700">Classwise GPA Distribution Summary Matrix</span>
+                  <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold text-[10px] px-3 py-1.5 rounded-lg cursor-pointer hover:shadow transition-all duration-150">View Telemetry</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page hidden space-y-4" id="page-settings">
+        <div class="grid grid-cols-3 gap-6">
+          <div class="col-span-2 bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><i class="ti ti-lock-square text-sky-500 text-base"></i> Core Infrastructure Variables</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Control operational engine configurations and localized SQLite3 database dump processes.</p>
+            </div>
+            <div class="space-y-2.5 font-medium text-xs">
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-100 last:border-0">
+                <span class="text-slate-700 font-semibold">Automated Encrypted DB Backup Schedules</span>
+                <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[11px] px-3 py-1.5 rounded-xl shadow-sm hover:shadow transition-all duration-150 cursor-pointer" onclick="alert('SQL raw memory dump file successfully allocated under local storage pipeline /backups/.')">Trigger Backup Dump (.SQL)</button>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-100 last:border-0">
+                <span class="text-slate-700 font-semibold">Global System Maintenance Mode</span>
+                <span class="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">LIVE ACCESSIBLE</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-slate-100 last:border-0">
+                <span class="text-slate-700 font-semibold">Django Server Debug Variables</span>
+                <span class="font-mono text-[10px] text-amber-700 bg-amber-50 border border-amber-200/60 px-2.5 py-0.5 rounded-lg font-bold">DEBUG = True</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white border border-slate-200/60 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+            <div>
+              <h4 class="text-xs font-bold mb-3 text-slate-900 flex items-center gap-1.5 uppercase tracking-wider"><i class="ti ti-history text-amber-500 text-base"></i> Audit Trail logs</h4>
+              <div class="space-y-3 overflow-y-auto max-h-[220px]">
+                <div class="p-2.5 bg-slate-50 border-l-2 border-amber-500 rounded-r-xl">
+                  <p class="text-slate-900 font-semibold text-[11px]">Asst. Faculty Fatema</p>
+                  <span class="text-slate-400 text-[10px] block mt-0.5">Mutated Grading Scheme • 12m ago</span>
+                </div>
+                <div class="p-2.5 bg-slate-50 border-l-2 border-sky-500 rounded-r-xl">
+                  <p class="text-slate-900 font-semibold text-[11px]">Super Admin Root</p>
+                  <span class="text-slate-400 text-[10px] block mt-0.5">Approved Leave ID #102 • 1h ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 items-center justify-center transition-all duration-300" id="add-student-overlay" onclick="closeAddStudentModal(event)">
+  <div class="w-[400px] bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden transform transition-all duration-300" onclick="event.stopPropagation()">
+    <div class="bg-slate-50 px-5 py-3.5 border-b border-slate-200/60 flex justify-between items-center">
+      <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wide">Register New Student Account</h4>
+      <span class="cursor-pointer text-xl text-slate-400 hover:text-slate-600 transition-colors font-bold" onclick="closeAddStudentModal(null)">&times;</span>
+    </div>
+    <div class="p-5 text-xs h-[480px] overflow-y-auto space-y-3.5">
+      <form method="POST" action="{% url 'admin_panel' %}" class="space-y-3">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create_student">
+        
+        <div>
+          <label class="font-bold text-slate-500 block mb-1">Unique Username ID</label>
+          <input type="text" name="username" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. sadia_islam" required>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-500 block mb-1">Secure Password Array</label>
+          <input type="password" name="password" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="••••••••" required>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-500 block mb-1">First Name String</label>
+            <input type="text" name="first_name" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. Sadia" required>
+          </div>
+          <div>
+            <label class="font-bold text-slate-500 block mb-1">Last Name String</label>
+            <input type="text" name="last_name" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. Islam" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-bold text-slate-500 block mb-1">Class & Section Target</label>
+            <select name="class_section" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all">
+              <option value="Class 8-B">Class 8-B</option>
+              <option value="Class 7-A">Class 7-A</option>
+              <option value="Class 9-A">Class 9-A</option>
+              <option value="Class 10-A">Class 10-A</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-bold text-slate-500 block mb-1">Class Roll Position</label>
+            <input type="text" name="roll" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. 03" required>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-500 block mb-1">Guardian Legal Entity Name</label>
+          <input type="text" name="guardian" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. Jalal Uddin" required>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-500 block mb-1">Verified Telephony Phone Number</label>
+          <input type="text" name="phone" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:border-sky-500 focus:bg-white transition-all" placeholder="e.g. 017XXXXXXXX" required>
+        </div>
+
+        <button class="bg-sky-500 text-white font-bold rounded-xl py-2.5 text-xs shadow-lg shadow-sky-500/10 hover:bg-sky-600 cursor-pointer transition-all w-full mt-3 block" type="submit">Complete Registration Token</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 items-start justify-center pt-[12vh] transition-all duration-200" id="global-search-overlay" onclick="closeSearchModal(event)">
+  <div class="w-[520px] bg-white rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden transform transition-all" onclick="event.stopPropagation()">
+    <div class="p-3.5 border-b border-slate-200/60 flex items-center gap-3 bg-slate-50/80">
+      <i class="ti ti-search text-slate-400 text-lg"></i>
+      <input type="text" id="search-input" placeholder="Query active database records (students, configs, metrics)..." class="w-full bg-transparent text-xs outline-none text-slate-800 placeholder-slate-400 font-medium" oninput="handleSearch(this.value)">
+      <span class="text-[9px] text-slate-400 font-bold bg-white px-2 py-0.5 rounded-lg border border-slate-200 shadow-sm font-mono tracking-wide">ESC</span>
+    </div>
+    <div class="p-2 max-h-[280px] overflow-y-auto text-xs" id="search-results-box">
+      <div class="p-4 text-slate-400 text-center font-medium">Type search query string parameters to parse metadata structures...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id, el) {
+  // Hide all logical layout frames safely
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  
+  // Expose active node frame criteria
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.remove('hidden');
+  
+  // Reset navigation layout classes systematically
+  document.querySelectorAll('.sb-item').forEach(i => {
+    i.classList.remove('bg-sky-500/10', 'text-sky-400', 'font-medium', 'mx-2', 'rounded-lg');
+    i.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200', 'px-3', 'mx-0');
+  });
+  
+  // Allocate active visual states dynamically
+  if (el) {
+    el.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-200', 'px-3', 'mx-0');
+    el.classList.add('bg-sky-500/10', 'text-sky-400', 'font-medium', 'mx-2', 'rounded-lg', 'py-2');
+  }
+  
+  // Sync page textual titles
+  const titles = {
+    dashboard:'Institutional Dashboard', students:'Student Management Directory', teachers:'Faculty Management Index',
+    attendance:'Biometric Attendance Tracker', fees:'Fee Collection & Ledger Management', payroll:'Teacher Financial Payroll Slips',
+    exam:'Academic Examinations Matrix', classes:'Class Scheduling Routines', notice:'Notice Board Engine',
+    sms:'SMS Telephony Alerts Gateway', parents:'Parental Association Portal', reports:'Reports & Document Analytics',
+    roles:'RBAC Role Permissions Mapping', settings:'Core Infrastructure Logs', leave:'Faculty Leave Matrix Tracking',
+    expenses:'Institutional Expenditure Records'
+  };
+  document.getElementById('page-title').textContent = titles[id] || id;
+}
+
+function openAddStudentModal() {
+  const modal = document.getElementById('add-student-overlay');
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+
+function closeAddStudentModal(e) {
+  if (!e || e.target === document.getElementById('add-student-overlay')) {
+    const modal = document.getElementById('add-student-overlay');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+  }
+}
+
+function openSearchModal() {
+  const overlay = document.getElementById('global-search-overlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+  document.getElementById('search-input').focus();
+}
+
+function closeSearchModal(e) {
+  if (!e || e.target === document.getElementById('global-search-overlay')) {
+    const overlay = document.getElementById('global-search-overlay');
+    overlay.classList.remove('flex');
+    overlay.classList.add('hidden');
+    document.getElementById('search-input').value = '';
+  }
+}
+
+function handleSearch(val) {
+  const box = document.getElementById('search-results-box');
+  if(!val.trim()) {
+    box.innerHTML = `<div class="p-4 text-slate-400 text-center font-medium">Type search query string parameters to parse metadata structures...</div>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="text-[10px] font-bold text-slate-400 px-2 uppercase tracking-widest my-1.5">Database Entity Matrix Matches</div>
+    <div class="p-2.5 hover:bg-slate-50 rounded-xl cursor-pointer flex items-center justify-between transition-colors" onclick="closeSearchModal(null); showPage('students')">
+      <span class="text-slate-700 font-semibold"><i class="ti ti-user text-sky-500 mr-1.5 text-base"></i> Active index lookup query row mapping values matching "${val}"...</span>
+      <span class="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">Table: Student</span>
+    </div>
+    <div class="p-2.5 hover:bg-slate-50 rounded-xl cursor-pointer flex items-center justify-between transition-colors" onclick="closeSearchModal(null); showPage('fees')">
+      <span class="text-slate-700 font-semibold"><i class="ti ti-receipt text-amber-500 mr-1.5 text-base"></i> Parse relational fee transaction token payloads matching "${val}"...</span>
+      <span class="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">Table: Accounting</span>
+    </div>
+  `;
+}
+
+// Global hotkeys mapping handler rules
+window.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    openSearchModal();
+  }
+  if (e.key === 'Escape') {
+    closeSearchModal(null);
+    closeAddStudentModal(null);
+  }
+});
+</script>
+</body>
+</html>
