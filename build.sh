@@ -10,3 +10,6 @@ python manage.py collectstatic --no-input
 
 # Run database migrations
 python manage.py migrate
+
+# Seed database with initial users and portal configurations
+python manage.py seed_data
